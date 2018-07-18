@@ -9,24 +9,24 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
-public class ThreadPoolTask implements Runnable,Serializable {
+public class ThreadPoolTask implements Runnable, Serializable {
     private final Socket socket;
     InputStream inputStream = null;
     OutputStream outputStream = null;
     private boolean shutdown = false;
-    HandleMapping handleMapping=new HandleMapping();
-    ResouceProcessor resouceProcessor =new ResouceProcessor();
+    HandleMapping handleMapping = new HandleMapping();
+    ResouceProcessor resouceProcessor = new ResouceProcessor();
 
     private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 
-    public ThreadPoolTask(Socket socket){
-      this.socket = socket;
-   }
+    public ThreadPoolTask(Socket socket) {
+        this.socket = socket;
+    }
 
     @Override
     public void run() {
-        try{
-            System.out.println("线程"+Thread.currentThread().getName()+"在帮我干活");
+        try {
+            System.out.println("线程" + Thread.currentThread().getName() + "在帮我干活");
             //socket.read
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
@@ -34,18 +34,17 @@ public class ThreadPoolTask implements Runnable,Serializable {
             Request request = new Request(inputStream);
 
             request.parse();
-            if(request.getMethod() == null){
+            if (request.getMethod() == null) {
                 socket.close();
                 return;
             }
-          /*  if(request.getUri().startsWith())*/
+            /*  if(request.getUri().startsWith())*/
             Boolean res = request.getUri().contains(".html");
-            if(res){
-                resouceProcessor.staicResourceProcesser(outputStream,request);
+            if (res) {
+                resouceProcessor.staicResourceProcesser(outputStream, request);
                 System.out.println("对的，你就是html");
-            }
-            else{
-               resouceProcessor.controllerProcesser(outputStream,request);
+            } else {
+                resouceProcessor.controllerProcesser(outputStream, request);
             }
 
 
@@ -58,7 +57,7 @@ public class ThreadPoolTask implements Runnable,Serializable {
 
 
             //关闭socket
-            if(socket != null){
+            if (socket != null) {
                 socket.close();
             }
 
@@ -66,8 +65,7 @@ public class ThreadPoolTask implements Runnable,Serializable {
             shutdown = SHUTDOWN_COMMAND.equals(request.getUri());
 
             Thread.sleep(1000);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
