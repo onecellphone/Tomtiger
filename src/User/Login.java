@@ -7,7 +7,7 @@ import tomTiger.Response;
 public class Login implements Action {
     @Override
     public void get(Request request, Response response) {
-      System.out.println("好的，你已经接触到核心秘密了！！！");
+        System.out.println("好的，你已经接触到核心秘密了！！！");
     }
 
     @Override
