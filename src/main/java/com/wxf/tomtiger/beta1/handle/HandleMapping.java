@@ -1,13 +1,13 @@
-package Handle;
+package com.wxf.tomtiger.beta1.handle;
 
-import Tool.FileHandle;
-import Tool.Key;
+
+import com.wxf.tomtiger.beta1.common.Request;
+import com.wxf.tomtiger.beta1.common.Response;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import tomTiger.Request;
-import tomTiger.Response;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Class.forName;
 
+/**
+ * @author wangxf1
+ */
 public class HandleMapping {
     private static Map<String, String> getMethod;
 
@@ -47,16 +49,12 @@ public class HandleMapping {
                 //因为servlvet里面用了get跟post方法，所以要用数组来存，返回的不能是method对象
                 for (Method method : methods) {
                     if ("get".equals(method.getName())) {
-                        method.invoke(obj, request, response);//执行
+                        method.invoke(obj, request, response);
                     }
-
                 }
-                response.setStatusCode(200);
-                response.setStatusMessage("OK");
-                response.setHeader(request.getHeader());
-                response.sendResponse("恭喜你打开成功");
+
             } else {
-                response.setStatusCode(500);
+                response.setStatusCode(404);
                 response.setStatusMessage("Not Found");
                 response.setHeader(request.getHeader());
                 response.sendResponse("恭喜你打开失败");
@@ -71,11 +69,12 @@ public class HandleMapping {
 
 
     private void loadListen() {
-        getMethod = new HashMap<String, String>();
+        getMethod = new HashMap<String, String>(16);
         try {
-            SAXReader reader = new SAXReader();
 
             File file = new File("config/action.xml");
+
+            SAXReader reader = new SAXReader();
             Document doc = reader.read(file);
             Element root = doc.getRootElement();
 

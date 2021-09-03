@@ -2,6 +2,6 @@
 <listens>
     <listen>
         <action method ="GET">/login</action>
-        <target>User.Login</target>
+        <target>com.wxf.tomtiger.beta1.servlet.LoginServlet</target>
     </listen>
 </listens>
