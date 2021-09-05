@@ -1,4 +1,4 @@
-package com.wxf.tomtiger.beta1.servlet;
+package com.wxf.tomtiger.servlet;
 
 /**
  * @author: wangxiaofeng

@@ -1,6 +1,8 @@
 package com.wxf.tomtiger.beta1;
 
+import com.wxf.tomtiger.config.ServletMappingConfiguration;
 import com.wxf.tomtiger.beta1.task.Server;
+import org.dom4j.DocumentException;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,22 +12,33 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class HttpServer {
+public class HttpBioServer {
 
 
     //收到关闭命令
-    private boolean shutDown = false;
+    private static boolean shutDown = false;
+
 
     /**
      * @param args
      */
-    public static void main(String[] args) {
-        HttpServer server = new HttpServer();
-        server.await();
+    public static void main(String[] args) throws DocumentException {
+        initServletMapping();
+        socketAwait();
+    }
+
+    /**
+     * init
+     */
+    private static void initServletMapping() throws DocumentException {
+        System.out.println("init servlet mapping");
+        ServletMappingConfiguration.initServletMapping();
+        System.out.println("output servlet mapping");
+        ServletMappingConfiguration.outputServletMapping();
 
     }
 
-    public void await() {
+    public static void socketAwait() {
         ServerSocket serverSocket = null;
         int port = 8080;
         try {
@@ -42,17 +55,12 @@ public class HttpServer {
             Socket socket = null;
             try {
                 socket = serverSocket.accept();
-
-                // TODO: 实现一个线程，处理本客户端的请求与响应
-                // TODO: 实现线程池
                 try {
                     //一个任务把他加入到线程池中
                     threadPool.execute(new Server(socket));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

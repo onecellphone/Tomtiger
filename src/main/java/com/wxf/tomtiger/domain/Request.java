@@ -1,23 +1,30 @@
-package com.wxf.tomtiger.beta1.common;
+package com.wxf.tomtiger.domain;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author wangxf1
+ */
 public class Request {
+
     private InputStream inputStream;
     private String uri;
-
-    public String getHttpVersion() {
-        return httpVersion;
-    }
-
-    public void setHttpVersion(String httpVersion) {
-        this.httpVersion = httpVersion;
-    }
-
     private String httpVersion;
+    private Map<String, String> header = new HashMap<>();
+    private String host;
+    private String method;
+
+
+    public Request(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    public Request() {
+
+    }
 
 
     public Map<String, String> getHeader() {
@@ -28,8 +35,6 @@ public class Request {
         this.header = header;
     }
 
-    private Map<String, String> header = new HashMap<>();
-
     public String getHost() {
         return host;
     }
@@ -38,7 +43,6 @@ public class Request {
         this.host = host;
     }
 
-    private String host;
 
     public String getMethod() {
         return method;
@@ -48,15 +52,22 @@ public class Request {
         this.method = method;
     }
 
-    private String method;
 
-    public Request(InputStream inputStream) {
-        this.inputStream = inputStream;
+
+    public void parse(String request){
+        uri = parseUri(request);
+
+        method = this.parseMethod(request);
+        System.out.println(method);
+
+        httpVersion = this.pareseHttpVersion(request);
+        System.out.println(httpVersion);
+        this.parseHttpHeader(request);
     }
 
 
     //用于解析http请求的数据
-    public void parse() {
+    public void parse() throws IOException {
         StringBuffer request = new StringBuffer(2048);
         int i;
         byte[] buffer = new byte[2048];
@@ -69,11 +80,12 @@ public class Request {
         for (int j = 0; j < i; j++) {
             request.append((char) buffer[j]);
         }
+        System.out.println("request params");
         System.out.println(request.toString());
 
         uri = parseUri(request.toString());
 
-        String requstStr= request.toString();
+        String requstStr = request.toString();
         method = this.parseMethod(requstStr);
         System.out.println(method);
 
@@ -140,6 +152,14 @@ public class Request {
         } else {
             return null;
         }
+    }
+
+    public String getHttpVersion() {
+        return httpVersion;
+    }
+
+    public void setHttpVersion(String httpVersion) {
+        this.httpVersion = httpVersion;
     }
 
     public String getUri() {

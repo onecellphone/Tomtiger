@@ -1,9 +1,9 @@
 package com.wxf.tomtiger.beta1.task;
 
 
-
-import com.wxf.tomtiger.beta1.common.Request;
-import com.wxf.tomtiger.beta1.servlet.DispatchServlet;
+import com.wxf.tomtiger.domain.Request;
+import com.wxf.tomtiger.domain.Response;
+import com.wxf.tomtiger.servlet.DispatchServlet;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +12,7 @@ import java.net.Socket;
 
 /**
  * 接收请求的server
+ *
  * @author wangxf1
  */
 public class Server implements Runnable, Serializable {
@@ -34,6 +35,7 @@ public class Server implements Runnable, Serializable {
 
             //创建请求对象并解析
             Request request = new Request(inputStream);
+            Response response = new Response(outputStream);
             request.parse();
 
             if (request.getMethod() == null) {
@@ -41,12 +43,7 @@ public class Server implements Runnable, Serializable {
                 return;
             }
 
-            boolean res = request.getUri().contains(".html");
-            if (res) {
-                dispatchServlet.staticResourceProcessor(outputStream, request);
-            } else {
-                dispatchServlet.controllerProcessor(outputStream, request);
-            }
+            dispatchServlet.dispatch(request, response);
 
             //关闭socket
             socket.close();
