@@ -3,8 +3,9 @@ package com.wxf.tomtiger.beta1.task;
 
 import com.wxf.tomtiger.domain.BioHttpRequest;
 import com.wxf.tomtiger.domain.BioHttpResponse;
-import com.wxf.tomtiger.servlet.DispatchServlet;
+import com.wxf.tomtiger.common.BizEngine;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class Server implements Runnable, Serializable {
     private final Socket socket;
     InputStream inputStream = null;
     OutputStream outputStream = null;
-    DispatchServlet dispatchServlet = new DispatchServlet();
+    BizEngine bizEngine = new BizEngine();
 
     public Server(Socket socket) {
         this.socket = socket;
@@ -28,28 +29,25 @@ public class Server implements Runnable, Serializable {
     @Override
     public void run() {
         try {
-
             //socket.read
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
 
             //创建请求对象并解析
             BioHttpRequest request = new BioHttpRequest(inputStream);
-            request.parse();
-            BioHttpResponse response = new BioHttpResponse(outputStream);
 
-
-            if (request.getMethod() == null) {
+            boolean parseFlag = request.parse();
+            if(!parseFlag){
                 socket.close();
                 return;
             }
 
-            dispatchServlet.dispatch(request, response);
+            BioHttpResponse response = new BioHttpResponse(outputStream);
+            bizEngine.dispatch(request, response);
 
-            //关闭socket
             socket.close();
-
             Thread.sleep(1000);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

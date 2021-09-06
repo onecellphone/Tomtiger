@@ -1,4 +1,4 @@
-package com.wxf.tomtiger.servlet;
+package com.wxf.tomtiger.common;
 
 import com.wxf.tomtiger.common.Request;
 import com.wxf.tomtiger.common.Response;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * @author wangxf1
  */
-public class DispatchServlet {
+public class BizEngine {
 
 
     public void staticResourceProcessor(Response response, Request request) throws IOException {

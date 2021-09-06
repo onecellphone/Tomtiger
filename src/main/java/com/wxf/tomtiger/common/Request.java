@@ -61,7 +61,7 @@ public class Request {
     }
 
 
-    protected void parse(Map<String, Object> paramMap) throws IOException {
+    protected void fillingField(Map<String, Object> paramMap) throws IOException {
         uri = paramMap.get("uri").toString();
         header = (Map<String, String>) paramMap.get("httpHeader");
         httpVersion = paramMap.get("httpVersion").toString();

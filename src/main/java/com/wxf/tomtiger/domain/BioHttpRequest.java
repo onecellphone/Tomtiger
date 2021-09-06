@@ -21,14 +21,15 @@ public class BioHttpRequest extends Request {
     }
 
 
-    public void parse() throws IOException {
+    public boolean parse() throws IOException {
         Map<String, Object> paramMap = ParseHttpUtil.parse(inputStream);
         int code = (int) paramMap.get("code");
         if(code == 0){
             System.out.println("param error");
-            return;
+            return false;
         }
 
-        super.parse(paramMap);
+        super.fillingField(paramMap);
+        return true;
     }
 }

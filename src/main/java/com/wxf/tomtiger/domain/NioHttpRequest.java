@@ -32,7 +32,7 @@ public class NioHttpRequest extends Request {
         String request = new String(buffer.array()).trim();
         System.out.println("客户端的请求内容" + request);
         Map requestParams = ParseHttpUtil.parse(request);
-        super.parse(requestParams);
+        super.fillingField(requestParams);
 
 
     }

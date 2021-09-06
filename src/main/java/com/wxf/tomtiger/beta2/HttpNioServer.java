@@ -1,9 +1,8 @@
 package com.wxf.tomtiger.beta2;
 
-import com.wxf.tomtiger.config.ServletMappingConfiguration;
 import com.wxf.tomtiger.domain.NioHttpRequest;
 import com.wxf.tomtiger.domain.NioHttpResponse;
-import com.wxf.tomtiger.servlet.DispatchServlet;
+import com.wxf.tomtiger.common.BizEngine;
 import org.dom4j.DocumentException;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class HttpNioServer {
     private Selector selector;
 
-    DispatchServlet dispatchServlet = new DispatchServlet();
+    BizEngine dispatchServlet = new BizEngine();
 
     private void init() throws IOException, DocumentException {
 
