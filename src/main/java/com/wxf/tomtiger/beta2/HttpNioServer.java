@@ -25,7 +25,7 @@ public class HttpNioServer {
 
     DispatchServlet dispatchServlet = new DispatchServlet();
 
-    public void init() throws IOException, DocumentException {
+    private void init() throws IOException, DocumentException {
         initServletMapping();
 
         selector = Selector.open();
@@ -41,7 +41,7 @@ public class HttpNioServer {
     /**
      * init
      */
-    private static void initServletMapping() throws DocumentException {
+    private void initServletMapping() throws DocumentException {
         System.out.println("init servlet mapping");
         ServletMappingConfiguration.initServletMapping();
         System.out.println("output servlet mapping");
@@ -49,10 +49,8 @@ public class HttpNioServer {
 
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) throws DocumentException {
+
+    public void run() throws DocumentException {
         HttpNioServer server = new HttpNioServer();
         try {
             server.init();

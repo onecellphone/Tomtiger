@@ -1,8 +1,5 @@
 package com.wxf.tomtiger.common;
 
-import com.wxf.tomtiger.domain.Request;
-import com.wxf.tomtiger.domain.Response;
-
 import java.io.IOException;
 
 /**

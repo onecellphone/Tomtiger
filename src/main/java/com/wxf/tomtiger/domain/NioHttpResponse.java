@@ -1,6 +1,6 @@
 package com.wxf.tomtiger.domain;
 
-import com.wxf.tomtiger.domain.Response;
+import com.wxf.tomtiger.common.Response;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -19,6 +19,7 @@ public class NioHttpResponse extends Response {
     public void setSelectionKey(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
+
 
     @Override
     public void write() throws IOException {

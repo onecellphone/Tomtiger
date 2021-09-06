@@ -1,8 +1,8 @@
 package com.wxf.tomtiger.beta1.task;
 
 
-import com.wxf.tomtiger.domain.Request;
-import com.wxf.tomtiger.domain.Response;
+import com.wxf.tomtiger.domain.BioHttpRequest;
+import com.wxf.tomtiger.domain.BioHttpResponse;
 import com.wxf.tomtiger.servlet.DispatchServlet;
 
 import java.io.InputStream;
@@ -34,9 +34,10 @@ public class Server implements Runnable, Serializable {
             outputStream = socket.getOutputStream();
 
             //创建请求对象并解析
-            Request request = new Request(inputStream);
-            Response response = new Response(outputStream);
+            BioHttpRequest request = new BioHttpRequest(inputStream);
             request.parse();
+            BioHttpResponse response = new BioHttpResponse(outputStream);
+
 
             if (request.getMethod() == null) {
                 socket.close();

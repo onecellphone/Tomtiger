@@ -1,7 +1,7 @@
 package com.wxf.tomtiger.util;
 
 
-import com.wxf.tomtiger.domain.Request;
+import com.wxf.tomtiger.common.Request;
 
 import java.io.File;
 import java.io.FileInputStream;

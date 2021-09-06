@@ -1,11 +1,13 @@
 package com.wxf.tomtiger.domain;
 
-import com.wxf.tomtiger.domain.Request;
+import com.wxf.tomtiger.common.Request;
+import com.wxf.tomtiger.util.ParseHttpUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.Map;
 
 /**
  * @author: wangxiaofeng
@@ -15,16 +17,12 @@ import java.nio.channels.SocketChannel;
 public class NioHttpRequest extends Request {
     private SelectionKey selectionKey;
 
-    public SelectionKey getSelectionKey() {
-        return selectionKey;
-    }
 
     public void setSelectionKey(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
 
 
-    @Override
     public void parse() throws IOException {
         //创建一个缓冲区
         ByteBuffer buffer = ByteBuffer.allocate(1024);
@@ -33,10 +31,11 @@ public class NioHttpRequest extends Request {
         channel.read(buffer);
         String request = new String(buffer.array()).trim();
         System.out.println("客户端的请求内容" + request);
-        super.parse(request);
+        Map requestParams = ParseHttpUtil.parse(request);
+        super.parse(requestParams);
+
 
     }
-
 
 
 }

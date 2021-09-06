@@ -12,6 +12,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author wangxf1
+ */
 public class HttpBioServer {
 
 
@@ -19,10 +22,8 @@ public class HttpBioServer {
     private static boolean shutDown = false;
 
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) throws DocumentException {
+
+    public void run() throws DocumentException {
         initServletMapping();
         socketAwait();
     }
@@ -30,7 +31,7 @@ public class HttpBioServer {
     /**
      * init
      */
-    private static void initServletMapping() throws DocumentException {
+    private void initServletMapping() throws DocumentException {
         System.out.println("init servlet mapping");
         ServletMappingConfiguration.initServletMapping();
         System.out.println("output servlet mapping");
@@ -38,7 +39,7 @@ public class HttpBioServer {
 
     }
 
-    public static void socketAwait() {
+    private void socketAwait() {
         ServerSocket serverSocket = null;
         int port = 8080;
         try {

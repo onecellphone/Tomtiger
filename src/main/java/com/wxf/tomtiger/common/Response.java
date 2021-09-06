@@ -1,9 +1,7 @@
-package com.wxf.tomtiger.domain;
+package com.wxf.tomtiger.common;
 
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -11,7 +9,6 @@ import java.util.Map;
  */
 public class Response {
 
-    private OutputStream outputStream;
     private int statusCode;
     private String statusMessage;
     private Map<String, String> header;
@@ -22,15 +19,6 @@ public class Response {
 
     }
 
-
-
-    public Response(OutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
 
     public void generateBody(String body){
         try {
@@ -55,11 +43,7 @@ public class Response {
     }
 
     public void write() throws IOException {
-        if(body == null){
-            return;
-        }
-        outputStream.write(body.getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
+
     }
 
 

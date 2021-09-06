@@ -1,7 +1,7 @@
 package com.wxf.tomtiger.servlet;
 
-import com.wxf.tomtiger.domain.Request;
-import com.wxf.tomtiger.domain.Response;
+import com.wxf.tomtiger.common.Request;
+import com.wxf.tomtiger.common.Response;
 import com.wxf.tomtiger.handle.HandleMapping;
 import com.wxf.tomtiger.handle.ResourceHandle;
 
@@ -18,15 +18,15 @@ public class DispatchServlet {
 
 
     public void staticResourceProcessor(Response response, Request request) throws IOException {
-        ResourceHandle resouceHandle = new ResourceHandle();
-        resouceHandle.setRequest(request);
-        resouceHandle.setResponse(response);
-        resouceHandle.sendStaticResource();
+        ResourceHandle resourceHandle = new ResourceHandle();
+        resourceHandle.setRequest(request);
+        resourceHandle.setResponse(response);
+        resourceHandle.sendStaticResource();
     }
 
-    public void controllerProcessor(Response response, Request request) throws IOException, DocumentException {
+    public void servletProcessor(Response response, Request request) throws IOException, DocumentException {
         HandleMapping handleMapping = new HandleMapping();
-        handleMapping.handleMapping(request, response);
+        handleMapping.invoke(request, response);
 
 
     }
@@ -36,7 +36,7 @@ public class DispatchServlet {
         if (res) {
             staticResourceProcessor(response, request);
         } else {
-            controllerProcessor(response, request);
+            servletProcessor(response, request);
         }
     }
 }
