@@ -18,10 +18,19 @@ public class ParseHttpUtil {
 
     public static Map parse(String request){
         Map<String, Object> map = new HashMap(16);
-        map.put("uri", parseUri(request));
-        map.put("method", parseMethod(request));
-        map.put("httpVersion", parseHttpVersion(request));
-        map.put("httpHeader", parseHttpHeader(request));
+        String uri = parseUri(request);
+        String method = parseMethod(request);
+        String httpVersion = parseHttpVersion(request);
+        Map httpHeader = parseHttpHeader(request);
+        if(uri == null || method == null  || httpVersion == null){
+            map.put("code", 0);
+            return map;
+        }
+        map.put("uri",uri);
+        map.put("method", method);
+        map.put("httpVersion", httpVersion);
+        map.put("httpHeader", httpHeader);
+        map.put("code", 1);
         return map;
     }
 
@@ -95,7 +104,7 @@ public class ParseHttpUtil {
         int index3;
         int headersEnd = requestString.indexOf("\r\n\r\n");
         if (headersEnd == -1) {
-            return null;
+            return new HashMap();
         }
         while (index1 != -1 && index1 < headersEnd) {
             index2 = requestString.indexOf(":", index1 + 1);

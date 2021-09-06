@@ -23,7 +23,7 @@ public class NioHttpRequest extends Request {
     }
 
 
-    public void parse() throws IOException {
+    public boolean parse() throws IOException {
         //创建一个缓冲区
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         SocketChannel channel = (SocketChannel) selectionKey.channel();
@@ -31,10 +31,15 @@ public class NioHttpRequest extends Request {
         channel.read(buffer);
         String request = new String(buffer.array()).trim();
         System.out.println("客户端的请求内容" + request);
+
         Map requestParams = ParseHttpUtil.parse(request);
+        int code = (int) requestParams.get("code");
+        if(code == 0){
+            System.out.println("param error");
+            return false;
+        }
         super.fillingField(requestParams);
-
-
+        return true;
     }
 
 
