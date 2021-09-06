@@ -26,7 +26,6 @@ public class HttpNioServer {
     DispatchServlet dispatchServlet = new DispatchServlet();
 
     private void init() throws IOException, DocumentException {
-        initServletMapping();
 
         selector = Selector.open();
         ServerSocketChannel channel = ServerSocketChannel.open();
@@ -38,16 +37,6 @@ public class HttpNioServer {
 
     }
 
-    /**
-     * init
-     */
-    private void initServletMapping() throws DocumentException {
-        System.out.println("init servlet mapping");
-        ServletMappingConfiguration.initServletMapping();
-        System.out.println("output servlet mapping");
-        ServletMappingConfiguration.outputServletMapping();
-
-    }
 
 
     public void run() throws DocumentException {

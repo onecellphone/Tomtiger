@@ -1,10 +1,9 @@
 package com.wxf.tomtiger.beta1;
 
-import com.wxf.tomtiger.config.ServletMappingConfiguration;
 import com.wxf.tomtiger.beta1.task.Server;
+import com.wxf.tomtiger.constants.Constants;
 import org.dom4j.DocumentException;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,50 +21,29 @@ public class HttpBioServer {
     private static boolean shutDown = false;
 
 
-
     public void run() throws DocumentException {
-        initServletMapping();
         socketAwait();
     }
 
-    /**
-     * init
-     */
-    private void initServletMapping() throws DocumentException {
-        System.out.println("init servlet mapping");
-        ServletMappingConfiguration.initServletMapping();
-        System.out.println("output servlet mapping");
-        ServletMappingConfiguration.outputServletMapping();
-
-    }
 
     private void socketAwait() {
         ServerSocket serverSocket = null;
-        int port = 8080;
         try {
-            serverSocket = new ServerSocket(port, 1, InetAddress.getByName("localhost"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(2, 4, 3,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
-                new ThreadPoolExecutor.DiscardOldestPolicy());
-        //等待请求
-        while (!shutDown) {
-            Socket socket = null;
-            try {
+            serverSocket = new ServerSocket(Constants.PORT, 1, InetAddress.getByName(Constants.HOST_NAME));
+            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(2, 4, 3,
+                    TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+                    new ThreadPoolExecutor.DiscardOldestPolicy());
+            //等待请求
+            while (!shutDown) {
+                Socket socket = null;
                 socket = serverSocket.accept();
-                try {
-                    //一个任务把他加入到线程池中
-                    threadPool.execute(new Server(socket));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                threadPool.execute(new Server(socket));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
     }
 
 }
