@@ -16,21 +16,6 @@ import java.io.IOException;
  */
 public class BizEngine {
 
-
-    public void staticResourceProcessor(Response response, Request request) throws IOException {
-        ResourceHandle resourceHandle = new ResourceHandle();
-        resourceHandle.setRequest(request);
-        resourceHandle.setResponse(response);
-        resourceHandle.sendStaticResource();
-    }
-
-    public void servletProcessor(Response response, Request request) throws IOException, DocumentException {
-        HandleMapping handleMapping = new HandleMapping();
-        handleMapping.invoke(request, response);
-
-
-    }
-
     public void dispatch(Request request, Response response) throws IOException, DocumentException {
         boolean res = request.getUri().contains(".html");
         if (res) {
@@ -38,5 +23,18 @@ public class BizEngine {
         } else {
             servletProcessor(response, request);
         }
+    }
+
+    public void staticResourceProcessor(Response response, Request request) throws IOException {
+        ResourceHandle resourceHandle = new ResourceHandle();
+        resourceHandle.setRequest(request);
+        resourceHandle.setResponse(response);
+        resourceHandle.resolveView();
+    }
+
+    public void servletProcessor(Response response, Request request) throws IOException, DocumentException {
+        HandleMapping handleMapping = new HandleMapping();
+        handleMapping.invoke(request, response);
+
     }
 }

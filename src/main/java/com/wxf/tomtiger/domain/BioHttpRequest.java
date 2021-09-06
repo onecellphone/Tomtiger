@@ -5,7 +5,6 @@ import com.wxf.tomtiger.util.ParseHttpUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Map;
 
 /**

@@ -25,11 +25,8 @@ public class ResourceHandle {
         this.request = request;
     }
 
-    public void sendStaticResource() {
+    public void resolveView() {
         String result = "File not found";
-        if (request.getUri() == null) {
-            return;
-        }
         try {
             String fileContent = FileUtil.fileRead(request);
             if (result.equals(fileContent)) {
@@ -37,16 +34,12 @@ public class ResourceHandle {
 
             } else {
                response.setStatusCode(404);
-               response.setStatusMessage("Not found");
             }
             response.generateBody(fileContent);
             response.write();
 
         } catch (Exception e) {
-            System.out.println(e.toString());
             e.printStackTrace();
         }
-
-
     }
 }

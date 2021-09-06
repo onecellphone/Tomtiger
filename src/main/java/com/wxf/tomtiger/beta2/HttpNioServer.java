@@ -24,6 +24,16 @@ public class HttpNioServer {
 
     BizEngine dispatchServlet = new BizEngine();
 
+    public void run() throws DocumentException {
+        HttpNioServer server = new HttpNioServer();
+        try {
+            server.init();
+            server.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void init() throws IOException, DocumentException {
 
         selector = Selector.open();
@@ -34,18 +44,6 @@ public class HttpNioServer {
 
         channel.register(this.selector, SelectionKey.OP_ACCEPT);
 
-    }
-
-
-
-    public void run() throws DocumentException {
-        HttpNioServer server = new HttpNioServer();
-        try {
-            server.init();
-            server.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void start() throws IOException, DocumentException {
@@ -73,8 +71,6 @@ public class HttpNioServer {
                 if (!reqList.isEmpty() && !rspList.isEmpty()) {
                     dispatchServlet.dispatch(reqList.poll(), rspList.poll());
                 }
-
-
             }
         }
     }

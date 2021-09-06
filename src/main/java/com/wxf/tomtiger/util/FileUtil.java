@@ -37,11 +37,12 @@ public class FileUtil {
             }
             //已经读到末流尾
             fileText = new String(bytes);
+            fis.close();
         } else {
             fileText = "File not found";
 
         }
-        fis.close();
+
 
         return fileText;
 
